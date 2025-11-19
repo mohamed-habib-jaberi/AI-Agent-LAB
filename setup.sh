@@ -11,8 +11,9 @@
 #        - python-dotenv
 #        - google-generativeai
 #   4. Enables ipywidgets in Jupyter Notebook
+#   5. Creates a .env file if missing (without exposing real API key)
 #
-# Usage (from project root):
+# Usage:
 #   chmod +x setup.sh
 #   ./setup.sh
 # ============================================================
@@ -58,6 +59,20 @@ python -m pip install \
 # 7) Enable ipywidgets extension for classic Jupyter Notebook
 echo "🔗 Enabling ipywidgets extension for Jupyter…"
 jupyter nbextension enable --py widgetsnbextension --sys-prefix || true
+
+# 8) Create .env file if missing
+if [ ! -f ".env" ]; then
+    echo "🧪 Creating .env file…"
+    cat <<EOF > .env
+# Environment variables for AI-Agent-LAB
+# Replace YOUR_REAL_KEY_HERE with your actual Gemini API key
+
+GEMINI_API_KEY=YOUR_REAL_KEY_HERE
+EOF
+    echo "✅ .env file created. Please update it with your real Gemini API key."
+else
+    echo "ℹ️  .env already exists — not modifying it."
+fi
 
 echo
 echo "✅ Setup complete!"
